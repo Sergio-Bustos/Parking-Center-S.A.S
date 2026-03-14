@@ -118,5 +118,5 @@ No requiere instalar Python, pip ni ninguna dependencia adicional.
 
 
 <div align="center">
-  Hecho con 🐍 para <strong>Parking Center S.A.S.</strong> · 2025
+  Hecho con 🐍 para <strong>Parking Center S.A.S.</strong> · 2026
 </div>
