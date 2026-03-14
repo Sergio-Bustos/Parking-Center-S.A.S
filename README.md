@@ -116,21 +116,6 @@ No requiere instalar Python, pip ni ninguna dependencia adicional.
 
 ---
 
-## 📁 Estructura del proyecto
-
-```
-Parking-Center-S.A.S/
-│
-├── Parking Center.exe   # ← Ejecutable standalone — este es el archivo a usar
-├── parking.py           # Código fuente original en Python
-├── README.md            # Documentación del proyecto
-│
-└── facturas/            # Generada automáticamente al guardar facturas
-    └── PLACA_HORA.txt   # Comprobante individual por cada vehículo atendido
-```
-
----
-
 
 <div align="center">
   Hecho con 🐍 para <strong>Parking Center S.A.S.</strong> · 2025
