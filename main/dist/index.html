@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- Codificación para tildes y caracteres en español -->
+  <meta charset="UTF-8" />
+
+  <!-- Hace que el responsive funcione en móviles -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Parking Center S.A.S.</title>
+
+  <!-- Fuentes: Fraunces (títulos), Space Mono (datos/precios), Plus Jakarta Sans (cuerpo) -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Hoja de estilos externa — contiene todo el diseño visual -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Ícono de la pestaña del navegador -->
+  <link rel="icon" type="image/png" href="image-removebg-preview (1).png">
+</head>
+<body>
+
+<!-- Fondo decorativo — aria-hidden para que los lectores de pantalla lo ignoren -->
+<div class="bg-mesh" aria-hidden="true">
+  <!-- Esfera ámbar grande, arriba a la derecha -->
+  <div class="bg-orb bg-orb--1"></div>
+  <!-- Esfera oscura grande, abajo a la izquierda -->
+  <div class="bg-orb bg-orb--2"></div>
+  <!-- Esfera ámbar pequeña, al centro -->
+  <div class="bg-orb bg-orb--3"></div>
+</div>
+
+
+<!-- Barra de navegación fija con efecto vidrio al hacer scroll -->
+<nav>
+  <!-- Logo: cuadrito ámbar con la "P" + nombre de la empresa -->
+  <div class="nav-logo">
+    <div class="nav-logo-icon">P</div>
+    <!-- <em> colorea "CENTER" en ámbar sin cambiar el significado del texto -->
+    <span class="nav-logo-text">PARKING <em>CENTER</em> S.A.S.</span>
+  </div>
+
+  <!-- Pastilla de versión -->
+  <div class="nav-badge">v1.0</div>
+</nav>
+
+
+<!-- Sección hero: dos columnas, texto a la izquierda y tarjeta a la derecha -->
+<section class="hero">
+
+  <!-- Columna izquierda: etiqueta, título, descripción y botones -->
+  <div class="hero-content">
+
+    <!-- Etiqueta con punto parpadeante encima del título -->
+    <div class="hero-tag">
+      <span class="hero-tag-dot"></span>
+      Sistema de gestión de parqueadero
+    </div>
+
+    <!-- Título principal — "Center" en ámbar e itálica -->
+    <h1>Parking<span class="accent">Center</span></h1>
+
+    <!-- Descripción breve del producto -->
+    <p class="hero-desc">
+      Control total de ingresos, salidas y facturación para tu parqueadero.
+      Sin instalaciones, sin internet. Solo abre y empieza.
+    </p>
+
+    <!-- Botones de descarga -->
+    <div class="buttons">
+
+      <!-- Descarga el ejecutable del programa -->
+      <a href="ParkingCenter.exe" download class="btn btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Descargar Programa
+      </a>
+
+      <!-- Descarga el manual en Word -->
+      <a href="Manual_ParkingCenter.docx" download class="btn btn-secondary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <polyline points="10 9 9 9 8 9"/>
+        </svg>
+        Manual de Usuario
+      </a>
+    </div>
+  </div><!-- /hero-content -->
+
+
+  <!-- Columna derecha: tarjeta decorativa que simula el panel de la app -->
+  <div class="hero-visual">
+
+    <div class="hero-card">
+
+      <!-- Barra de título estilo ventana con los tres puntos decorativos -->
+      <div class="hero-card-header">
+        <div class="hero-card-dots">
+          <span class="dot dot--red"></span>
+          <span class="dot dot--yellow"></span>
+          <span class="dot dot--green"></span>
+        </div>
+        <span class="hero-card-title">Panel de Control</span>
+      </div>
+
+      <div class="hero-card-body">
+
+        <!-- Tres métricas en fila con divisores verticales -->
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-num">3</div>
+            <div class="stat-label">Tipos de vehículo</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <div class="stat-num">0</div>
+            <div class="stat-label">Instalación requerida</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <div class="stat-num">100%</div>
+            <div class="stat-label">Sin internet</div>
+          </div>
+        </div>
+
+        <!-- Separador horizontal -->
+        <div class="hero-card-divider"></div>
+
+        <!-- Badges de los tres tipos de vehículo con íconos -->
+        <div class="hero-card-badges">
+
+          <!-- Badge azul: Carros -->
+          <div class="hero-badge hero-badge--blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="1" y="11" width="22" height="9" rx="1"/>
+              <path d="M5 11V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v4"/>
+              <circle cx="7" cy="20" r="1"/>
+              <circle cx="17" cy="20" r="1"/>
+            </svg>
+            Carros
+          </div>
+
+          <!-- Badge morado: Motos -->
+          <div class="hero-badge hero-badge--purple">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="5" cy="17" r="3"/>
+              <circle cx="19" cy="17" r="3"/>
+              <path d="M14 17H9a2 2 0 0 1-2-2V9l3-3h4l2 4h2a1 1 0 0 1 1 1v3"/>
+            </svg>
+            Motos
+          </div>
+
+          <!-- Badge teal: Camionetas -->
+          <div class="hero-badge hero-badge--teal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="10" width="20" height="10" rx="1"/>
+              <path d="M4 10V7a1 1 0 0 1 1-1h4l3-3h5a1 1 0 0 1 1 1v6"/>
+              <circle cx="7" cy="20" r="1"/>
+              <circle cx="17" cy="20" r="1"/>
+            </svg>
+            Camionetas
+          </div>
+        </div><!-- /hero-card-badges -->
+
+        <!-- Barra de progreso — se anima al cargar la página -->
+        <div class="hero-card-bar-label">Vehículos activos hoy</div>
+        <div class="hero-card-bar">
+          <div class="hero-card-bar-fill"></div>
+        </div>
+
+      </div><!-- /hero-card-body -->
+    </div><!-- /hero-card -->
+
+    <!-- Pastilla flotante en la esquina inferior derecha de la tarjeta -->
+    <div class="hero-floating-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+      </svg>
+      100% Offline
+    </div>
+
+  </div><!-- /hero-visual -->
+
+</section><!-- /hero -->
+
+
+<!-- Sección de funcionalidades: cuadrícula de tarjetas con animación en cascada -->
+<section class="section">
+  <div class="section-label">Funcionalidades</div>
+  <h2>Todo lo que necesitas</h2>
+
+  <div class="features-grid">
+
+    <!-- Tarjeta 1: Registro de Ingresos -->
+    <div class="feature-card" style="animation-delay:0s">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="11" width="22" height="9" rx="1"/>
+          <path d="M5 11V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v4"/>
+          <circle cx="7" cy="20" r="1"/>
+          <circle cx="17" cy="20" r="1"/>
+          <path d="M9 5h2m2 0h2"/>
+        </svg>
+      </div>
+      <h3>Registro de Ingresos</h3>
+      <p>Registra la placa, tipo de vehículo y hora de entrada con un solo clic. El sistema evita duplicados automáticamente.</p>
+    </div>
+
+    <!-- Tarjeta 2: Facturación Automática -->
+    <div class="feature-card" style="animation-delay:0.08s">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+        </svg>
+      </div>
+      <h3>Facturación Automática</h3>
+      <p>Al registrar la salida, el sistema calcula el tiempo y el cobro al instante, y genera una factura detallada.</p>
+    </div>
+
+    <!-- Tarjeta 3: Guardar Facturas -->
+    <div class="feature-card" style="animation-delay:0.16s">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+          <polyline points="17 21 17 13 7 13 7 21"/>
+          <polyline points="7 3 7 8 15 8"/>
+        </svg>
+      </div>
+      <h3>Guardar Facturas</h3>
+      <p>Exporta cada factura como archivo .txt con nombre único por placa y hora, listo para archivar.</p>
+    </div>
+
+    <!-- Tarjeta 4: Reporte del Día -->
+    <div class="feature-card" style="animation-delay:0.24s">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="10"/>
+          <line x1="12" y1="20" x2="12" y2="4"/>
+          <line x1="6" y1="20" x2="6" y2="14"/>
+          <line x1="2" y1="20" x2="22" y2="20"/>
+        </svg>
+      </div>
+      <h3>Reporte del Día</h3>
+      <p>Consulta en cualquier momento el total recaudado y la cantidad de vehículos atendidos durante la jornada.</p>
+    </div>
+
+    <!-- Tarjeta 5: Buscar por Placa -->
+    <div class="feature-card" style="animation-delay:0.32s">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </div>
+      <h3>Buscar por Placa</h3>
+      <p>Localiza cualquier vehículo activo al instante con su hora de entrada y tipo registrado.</p>
+    </div>
+
+    <!-- Tarjeta 6: Sin Configuración -->
+    <div class="feature-card" style="animation-delay:0.4s">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+      </div>
+      <h3>Sin Configuración</h3>
+      <p>Solo descarga el .exe y ábrelo. No requiere instalar Python, librerías ni ningún software adicional.</p>
+    </div>
+
+  </div><!-- /features-grid -->
+</section><!-- /funcionalidades -->
+
+
+<!-- Sección de tarifas: tres columnas, una por tipo de vehículo -->
+<section class="section section--tarifas" style="padding-top:0">
+  <div class="section-label">Tarifas</div>
+  <h2>Cobro por hora</h2>
+
+  <div class="tarifas-grid">
+
+    <!-- Tarjeta Moto — franja morada en el tope -->
+    <div class="tarifa-card">
+      <div class="tarifa-stripe tarifa-stripe--moto"></div>
+      <div class="tarifa-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="5" cy="17" r="3"/>
+          <circle cx="19" cy="17" r="3"/>
+          <path d="M14 17H9a2 2 0 0 1-2-2V9l3-3h4l2 4h2a1 1 0 0 1 1 1v3"/>
+        </svg>
+      </div>
+      <div class="tarifa-tipo">Moto</div>
+      <div class="tarifa-precio">$1.000</div>
+      <div class="tarifa-unit">por hora</div>
+    </div>
+
+    <!-- Tarjeta Carro — destacada con borde ámbar y badge "Más frecuente" -->
+    <div class="tarifa-card tarifa-card--featured">
+      <div class="tarifa-stripe tarifa-stripe--carro"></div>
+      <div class="tarifa-badge-top">Más frecuente</div>
+      <div class="tarifa-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="11" width="22" height="9" rx="1"/>
+          <path d="M5 11V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v4"/>
+          <circle cx="7" cy="20" r="1"/>
+          <circle cx="17" cy="20" r="1"/>
+        </svg>
+      </div>
+      <div class="tarifa-tipo">Carro</div>
+      <div class="tarifa-precio">$2.000</div>
+      <div class="tarifa-unit">por hora</div>
+    </div>
+
+    <!-- Tarjeta Camioneta — franja teal en el tope -->
+    <div class="tarifa-card">
+      <div class="tarifa-stripe tarifa-stripe--camioneta"></div>
+      <div class="tarifa-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="10" width="20" height="10" rx="1"/>
+          <path d="M4 10V7a1 1 0 0 1 1-1h4l3-3h5a1 1 0 0 1 1 1v6"/>
+          <circle cx="7" cy="20" r="1"/>
+          <circle cx="17" cy="20" r="1"/>
+        </svg>
+      </div>
+      <div class="tarifa-tipo">Camioneta</div>
+      <div class="tarifa-precio">$2.500</div>
+      <div class="tarifa-unit">por hora</div>
+    </div>
+
+  </div><!-- /tarifas-grid -->
+</section><!-- /tarifas -->
+
+
+<!-- Bloque CTA: llamado a la acción con botones de descarga centrados -->
+<div class="cta">
+  <!-- Texto decorativo de fondo — aria-hidden para lectores de pantalla -->
+  <div class="cta-bg-text" aria-hidden="true">S.A.S</div>
+
+  <div class="cta-inner">
+    <h2>Listo para usar</h2>
+    <p>Descarga el programa y el manual. Ponlos en la misma carpeta y empieza hoy.</p>
+
+    <div class="buttons">
+      <!-- Descarga el .exe -->
+      <a href="ParkingCenter.exe" download class="btn btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Descargar .exe
+      </a>
+
+      <!-- Descarga el manual en Word -->
+      <a href="Manual_ParkingCenter.docx" download class="btn btn-secondary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+        </svg>
+        Descargar Manual
+      </a>
+    </div>
+  </div><!-- /cta-inner -->
+</div><!-- /cta -->
+
+
+<!-- Pie de página con copyright -->
+<footer>
+  <div class="footer-inner">
+    <!-- Monograma: "P" normal, "C" en ámbar -->
+    <div class="footer-logo">P<em>C</em></div>
+    <span>Parking Center S.A.S. &copy; 2026 — Sistema de Gestión de Parqueadero</span>
+  </div>
+</footer>
+
+</body>
+</html>
