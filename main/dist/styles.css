@@ -1,0 +1,197 @@
+/* ============================================================
+   PARKING CENTER S.A.S. — estilos 1/4
+   Base, tema claro/oscuro, fondo vivo, pantalla de carga,
+   navegación y botones.
+   Orden de carga: styles.css → estilos-hero.css →
+   estilos-secciones.css → estilos-final.css
+   ============================================================ */
+
+@property --a { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+
+/* ── Variables (tema oscuro por defecto) ─────────────────── */
+:root {
+  --bg: #07080d;       --bg2: #0d0f18;
+  --card: rgba(255,255,255,.045);  --card-h: rgba(255,255,255,.08);
+  --line: rgba(255,255,255,.09);   --line-2: rgba(255,255,255,.2);
+  --text: #f3f5ff;     --muted: #8e94ad;   --muted2: #b3b8cd;
+
+  --yellow: #ffd23f;   /* línea de carretera / placa */
+  --amber:  #ff9f1c;
+  --red:    #ff3d57;   /* luz de freno */
+  --cyan:   #35e0ff;   /* faros */
+  --green:  #3dffa0;   /* espacio libre */
+
+  --grad: linear-gradient(110deg, var(--yellow), var(--amber) 45%, var(--red));
+  --glow: rgba(255,159,28,.35);
+  --g1: rgba(255,159,28,.16);  --g2: rgba(255,61,87,.13);
+  --nav: rgba(11,13,22,.72);
+  --shadow: 0 24px 70px rgba(0,0,0,.5);
+
+  --f-display: 'Bricolage Grotesque', 'Arial Black', system-ui, sans-serif;
+  --f-body:    'Manrope', system-ui, sans-serif;
+  --f-mono:    'JetBrains Mono', ui-monospace, 'Courier New', monospace;
+
+  --ease:   cubic-bezier(.22, 1, .36, 1);
+  --spring: cubic-bezier(.34, 1.56, .64, 1);
+}
+
+[data-theme="light"] {
+  --bg: #f3f0e8;      --bg2: #ebe6da;
+  --card: rgba(255,255,255,.72);  --card-h: #ffffff;
+  --line: rgba(20,21,28,.1);      --line-2: rgba(20,21,28,.22);
+  --text: #14151c;    --muted: #5d6176;   --muted2: #42465a;
+  --yellow: #e9a900;  --amber: #e66f00;   --red: #d62b45;
+  --cyan: #0a8fb0;    --green: #0f9f64;
+  --glow: rgba(230,111,0,.3);
+  --g1: rgba(255,159,28,.2);   --g2: rgba(255,61,87,.1);
+  --nav: rgba(255,255,255,.78);
+  --shadow: 0 24px 60px rgba(40,30,10,.16);
+}
+
+/* ── Reset y base ────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 96px; overflow-x: hidden; }
+body {
+  font-family: var(--f-body); background: var(--bg); color: var(--text);
+  line-height: 1.65; overflow-x: hidden; min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color .5s ease, color .5s ease;
+}
+h1, h2, h3 { font-family: var(--f-display); line-height: 1.05; letter-spacing: -.03em; }
+a { color: inherit; text-decoration: none; }
+ul, ol { list-style: none; }
+img { max-width: 100%; display: block; }
+::selection { background: var(--yellow); color: #111; }
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: linear-gradient(var(--yellow), var(--red)); border-radius: 10px; border: 2px solid var(--bg); }
+main, footer { position: relative; z-index: 1; }
+
+/* Grano sutil sobre toda la página */
+body::after {
+  content: ''; position: fixed; inset: 0; z-index: 9000; pointer-events: none; opacity: .7;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+}
+
+/* ── Fondo vivo ──────────────────────────────────────────── */
+.bg-fx { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.bg-fx canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.bg-glow { position: absolute; width: 75vmax; height: 75vmax; border-radius: 50%; will-change: transform; }
+.bg-glow.g1 { top: -30%; right: -20%; background: radial-gradient(circle, var(--g1), transparent 65%); animation: drift1 26s ease-in-out infinite; }
+.bg-glow.g2 { bottom: -35%; left: -25%; background: radial-gradient(circle, var(--g2), transparent 65%); animation: drift2 32s ease-in-out infinite; }
+.bg-grid {
+  position: absolute; inset: 0; opacity: .55;
+  background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 72px 72px; animation: gridMove 18s linear infinite;
+  -webkit-mask-image: radial-gradient(ellipse 75% 55% at 50% 18%, #000 15%, transparent 75%);
+          mask-image: radial-gradient(ellipse 75% 55% at 50% 18%, #000 15%, transparent 75%);
+}
+.cursor-glow {
+  position: absolute; top: 0; left: 0; width: 520px; height: 520px; margin: -260px 0 0 -260px;
+  border-radius: 50%; opacity: 0; transition: opacity .6s;
+  background: radial-gradient(circle, var(--glow), transparent 62%);
+}
+.cursor-glow.on { opacity: .24; }
+
+.scroll-progress {
+  position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 2000;
+  background: var(--grad); transform-origin: left; transform: scaleX(var(--p, 0));
+  box-shadow: 0 0 14px var(--glow);
+}
+
+/* ── Pantalla de carga: barrera de parqueadero ───────────── */
+.preloader {
+  position: fixed; inset: 0; z-index: 10000; display: grid; place-content: center; justify-items: center;
+  gap: 1.5rem; background: #07080d; color: #fff; pointer-events: none;
+  animation: plOut .8s var(--ease) 2.1s forwards;   /* se quita sola aunque el JS falle */
+}
+.preloader.done { animation-delay: 0s; }
+.preloader::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 45%, rgba(255,159,28,.2), transparent 55%);
+  animation: pulse 2s ease-in-out infinite;
+}
+.pl-gate { position: relative; width: 230px; height: 96px; }
+.pl-post {
+  position: absolute; left: 0; bottom: 0; width: 34px; height: 64px; border-radius: 6px 6px 3px 3px;
+  background: linear-gradient(#2a2d3a, #171923); border: 1px solid rgba(255,255,255,.14);
+}
+.pl-post::after {
+  content: ''; position: absolute; top: 8px; left: 50%; width: 10px; height: 10px; margin-left: -5px;
+  border-radius: 50%; background: var(--red); box-shadow: 0 0 14px var(--red);
+  animation: lightSwap 1.4s steps(1) forwards;
+}
+.pl-arm {
+  position: absolute; left: 28px; bottom: 50px; width: 200px; height: 12px; border-radius: 6px;
+  background: repeating-linear-gradient(90deg, #ff3d57 0 24px, #fff 24px 48px);
+  transform-origin: 6px 50%; animation: armLift 1s var(--spring) .55s forwards;
+  box-shadow: 0 0 18px rgba(255,61,87,.45);
+}
+.pl-brand { position: relative; font: 800 clamp(1.5rem, 6vw, 2.2rem)/1 var(--f-display); letter-spacing: -.02em; animation: up .8s var(--ease) .15s backwards; }
+.pl-brand em { font-style: normal; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.pl-bar { position: relative; width: min(240px, 60vw); height: 3px; border-radius: 3px; background: rgba(255,255,255,.12); overflow: hidden; }
+.pl-bar span { position: absolute; inset: 0; background: var(--grad); transform-origin: left; animation: fill 1.4s var(--ease) forwards; }
+
+/* ── Navegación ──────────────────────────────────────────── */
+.nav {
+  position: fixed; top: 14px; left: 50%; translate: -50% 0; z-index: 1000;
+  width: min(1180px, calc(100% - 24px)); display: flex; align-items: center; gap: 1rem;
+  padding: .5rem .55rem .5rem 1rem; background: var(--nav);
+  border: 1px solid var(--line); border-radius: 999px; box-shadow: 0 8px 30px rgba(0,0,0,.25);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5); backdrop-filter: blur(18px) saturate(1.5);
+  transition: top .4s var(--ease), box-shadow .4s, width .5s var(--ease);
+  animation: navIn 1s var(--ease) 1.9s backwards;
+}
+.nav.scrolled { top: 8px; width: min(1020px, calc(100% - 24px)); box-shadow: var(--shadow), 0 0 0 1px var(--line-2); }
+.nav-logo { display: flex; align-items: center; gap: .65rem; }
+.nav-logo-icon {
+  position: relative; overflow: hidden; display: grid; place-items: center; width: 34px; height: 34px;
+  border-radius: 10px; background: var(--grad); color: #1a0f00; font: 800 1.15rem/1 var(--f-display);
+  transition: transform .6s var(--spring);
+}
+.nav-logo-icon::after { content: ''; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,.7) 50%, transparent 65%); translate: -120% 0; animation: shine 4.5s ease-in-out 3s infinite; }
+.nav-logo:hover .nav-logo-icon { transform: rotate(-10deg) scale(1.12); }
+.nav-logo-text { font: 700 .95rem/1 var(--f-display); letter-spacing: -.01em; white-space: nowrap; }
+.nav-logo-text em { font-style: normal; color: var(--amber); }
+.nav-links { display: flex; gap: .2rem; margin: 0 auto; }
+.nav-links a { position: relative; font-size: .86rem; font-weight: 600; color: var(--muted2); padding: .5rem .95rem; border-radius: 999px; transition: color .3s, background .3s, transform .35s var(--spring); }
+.nav-links a:hover, .nav-links a.active { color: var(--text); background: var(--card); transform: translateY(-2px); }
+.nav-links a.active::after { content: ''; position: absolute; left: 50%; bottom: 2px; width: 16px; height: 3px; margin-left: -8px; border-radius: 3px; background: var(--grad); }
+.nav-actions { display: flex; align-items: center; gap: .5rem; margin-left: auto; }
+.theme-btn {
+  display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; cursor: pointer;
+  background: var(--card); border: 1px solid var(--line-2); color: var(--yellow);
+  transition: transform .5s var(--spring), box-shadow .3s;
+}
+.theme-btn:hover { transform: rotate(90deg) scale(1.12); box-shadow: 0 0 22px var(--glow); }
+.theme-btn svg { width: 18px; height: 18px; }
+.theme-btn .i-moon { display: none; }
+[data-theme="light"] .theme-btn .i-sun { display: none; }
+[data-theme="light"] .theme-btn .i-moon { display: block; }
+.theme-btn.spin svg { animation: spinIn .7s var(--spring); }
+
+/* ── Botones ─────────────────────────────────────────────── */
+.btn {
+  position: relative; overflow: hidden; isolation: isolate; display: inline-flex; align-items: center; justify-content: center;
+  gap: .6rem; font: 700 .95rem/1 var(--f-body); padding: .9rem 1.5rem; border-radius: 999px; cursor: pointer;
+  border: 1px solid transparent; translate: var(--bx, 0) var(--by, 0);
+  transition: translate .35s var(--ease), transform .45s var(--spring), box-shadow .4s, border-color .3s, background-position .6s;
+}
+.btn svg { width: 18px; height: 18px; flex-shrink: 0; transition: transform .5s var(--spring); }
+.btn:hover svg { transform: translateY(3px) scale(1.15); }
+.btn::after { content: ''; position: absolute; top: 0; left: -80%; width: 50%; height: 100%; z-index: -1; background: linear-gradient(100deg, transparent, rgba(255,255,255,.5), transparent); transform: skewX(-22deg); transition: left .7s var(--ease); }
+.btn:hover::after { left: 140%; }
+.btn:active { transform: scale(.96); }
+.btn-sm { padding: .62rem 1.15rem; font-size: .82rem; }
+.btn-lg { padding: 1.05rem 1.9rem; font-size: 1rem; }
+.btn-primary {
+  background: linear-gradient(110deg, var(--yellow), var(--amber), var(--red), var(--yellow)); background-size: 300% 100%;
+  color: #1a0f00; box-shadow: 0 10px 30px -8px var(--glow), inset 0 1px 0 rgba(255,255,255,.4);
+}
+.btn-primary:hover { background-position: 100% 0; transform: translateY(-4px) scale(1.04); box-shadow: 0 18px 42px -10px var(--glow), 0 0 0 4px rgba(255,159,28,.15); }
+.btn-ghost { background: var(--card); color: var(--text); border-color: var(--line-2); }
+.btn-ghost:hover { border-color: var(--yellow); transform: translateY(-4px) scale(1.04); box-shadow: 0 14px 34px -12px var(--glow), inset 0 0 22px -12px var(--glow); }
+.ripple { position: absolute; border-radius: 50%; background: rgba(255,255,255,.55); transform: scale(0); animation: ripple .7s ease-out forwards; pointer-events: none; z-index: -1; }
+
+@media (max-width: 899.98px) { .nav-links { display: none; } .nav-logo-text { font-size: .85rem; } }
+@media (max-width: 420px) { .nav-actions .btn { display: none; } .nav-actions { margin-left: auto; } }

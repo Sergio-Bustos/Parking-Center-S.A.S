@@ -1,0 +1,128 @@
+/* ============================================================
+   PARKING CENTER S.A.S. — estilos 3/4
+   Secciones: funciones (bento), cómo funciona, tarifas y simulador.
+   ============================================================ */
+
+.section { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: clamp(4rem, 9vw, 7rem) clamp(1.1rem, 4vw, 2.5rem) 1rem; }
+.head { margin-bottom: clamp(2rem, 5vw, 3.2rem); }
+.eyebrow { display: inline-flex; align-items: center; gap: .7rem; margin-bottom: .9rem; font: 500 .75rem/1 var(--f-mono); letter-spacing: .2em; text-transform: uppercase; color: var(--amber); }
+.eyebrow::before { content: ''; width: 34px; height: 3px; border-radius: 3px; background: var(--grad); box-shadow: 0 0 12px var(--glow); }
+.head h2 { font-size: clamp(2.2rem, 5.4vw, 3.9rem); font-weight: 800; letter-spacing: -.045em; }
+
+/* Efecto de luz que sigue al cursor (script.js define --mx y --my) */
+.spot { position: relative; overflow: hidden; }
+.spot::before {
+  content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity .5s;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), var(--glow), transparent 60%);
+}
+.spot:hover::before { opacity: .38; }
+.spot > * { position: relative; z-index: 1; }
+
+/* ── Funcionalidades: cuadrícula bento ───────────────────── */
+.bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem; }
+.f {
+  grid-column: span 2; padding: 1.8rem; border-radius: 26px; background: var(--card); border: 1px solid var(--line);
+  transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform .7s var(--ease), border-color .4s, background .4s, box-shadow .5s;
+}
+.f.tilting { transition: transform .12s linear, border-color .4s, background .4s, box-shadow .5s; }
+.f:hover { border-color: color-mix(in srgb, var(--amber) 55%, transparent); background: var(--card-h); box-shadow: var(--shadow), 0 20px 60px -30px var(--glow); }
+.f:nth-child(1), .f:nth-child(2) { grid-column: span 3; }
+.f-wide { grid-column: span 6 !important; display: grid; grid-template-columns: 1.1fr 1fr; gap: 2rem; align-items: center; }
+.f-n { position: absolute !important; top: 1.2rem; right: 1.4rem; font: 800 3.2rem/1 var(--f-display); letter-spacing: -.06em; color: transparent; -webkit-text-stroke: 1.5px var(--line-2); transition: transform .7s var(--spring), -webkit-text-stroke-color .4s; }
+.f:hover .f-n { transform: translate(-6px, 6px) rotate(-5deg) scale(1.1); -webkit-text-stroke-color: var(--amber); }
+
+.f-icon, .t-icon {
+  display: grid; place-items: center; width: 58px; height: 58px; margin-bottom: 1.2rem; border-radius: 18px; color: var(--amber);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--yellow) 20%, transparent), color-mix(in srgb, var(--red) 12%, transparent));
+  border: 1px solid color-mix(in srgb, var(--amber) 35%, transparent); box-shadow: inset 0 0 22px -8px var(--glow);
+  transition: transform .7s var(--spring), background .4s, color .3s, box-shadow .4s;
+}
+.f-icon svg, .t-icon svg { width: 28px; height: 28px; }
+.f:hover .f-icon, .t:hover .t-icon { transform: translateY(-5px) rotate(-9deg) scale(1.14); background: var(--grad); color: #1a0f00; box-shadow: 0 14px 30px -8px var(--glow); }
+/* Los íconos se "dibujan" al aparecer */
+.js .f svg *, .js .t svg * { stroke-dasharray: 120; stroke-dashoffset: 120; }
+.f.visible svg *, .t.visible svg * { animation: draw 1.4s var(--ease) .3s forwards; }
+.f h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: .6rem; }
+.f p { font-size: .95rem; line-height: 1.75; color: var(--muted2); }
+
+.term { padding: 1.1rem 1.2rem; font: 500 .84rem/2 var(--f-mono); color: #d8dcf0; background: #080a12; border: 1px solid rgba(255,255,255,.1); border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,.4); }
+.term i { font-style: normal; color: var(--amber); margin-right: .5rem; }
+.term .ok { color: var(--green); }
+.caret { display: inline-block; width: .55em; height: 1.05em; margin-left: 4px; vertical-align: text-bottom; background: var(--yellow); animation: caret 1s steps(1) infinite; }
+.js .term p { opacity: 0; }
+.f.visible .term p { animation: lineIn .6s var(--ease) forwards; }
+.f.visible .term p:nth-child(1) { animation-delay: .5s; } .f.visible .term p:nth-child(2) { animation-delay: 1.1s; }
+.f.visible .term p:nth-child(3) { animation-delay: 1.6s; } .f.visible .term p:nth-child(4) { animation-delay: 2.1s; }
+.f.visible .term p:nth-child(5) { animation-delay: 2.7s; }
+
+/* ── Cómo funciona: camino con carrito que avanza al hacer scroll ── */
+.steps { --sp: 0; position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; padding-top: 2.4rem; }
+.steps::before, .steps::after { content: ''; position: absolute; top: 0; left: 4%; height: 4px; border-radius: 4px; }
+.steps::before { right: 4%; background: repeating-linear-gradient(90deg, var(--line-2) 0 14px, transparent 14px 26px); }
+.steps::after { width: calc(92% * var(--sp)); background: var(--grad); box-shadow: 0 0 16px var(--glow); }
+.step { padding: 1.8rem; border-radius: 24px; background: var(--card); border: 1px solid var(--line); transition: transform .5s var(--spring), border-color .4s, box-shadow .5s; }
+.step:hover { transform: translateY(-8px); border-color: color-mix(in srgb, var(--amber) 55%, transparent); box-shadow: var(--shadow); }
+.step-n { display: inline-grid; place-items: center; width: 54px; height: 54px; margin-bottom: 1rem; font: 800 1.2rem/1 var(--f-display); color: #1a0f00; background: var(--grad); border-radius: 16px; box-shadow: 0 10px 26px -8px var(--glow); transition: transform .6s var(--spring); }
+.step:hover .step-n { transform: rotate(-12deg) scale(1.15); }
+.step h3 { font-size: 1.3rem; margin-bottom: .55rem; }
+.step p { font-size: .95rem; line-height: 1.75; color: var(--muted2); }
+
+/* ── Tarifas ─────────────────────────────────────────────── */
+.tarifas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.t {
+  padding: 2.2rem 1.5rem 1.8rem; text-align: center; border-radius: 26px; background: var(--card); border: 1px solid var(--line);
+  transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform .7s var(--ease), border-color .4s, box-shadow .5s;
+}
+.t.tilting { transition: transform .12s linear, border-color .4s, box-shadow .5s; }
+.t:hover { box-shadow: var(--shadow), 0 20px 60px -30px var(--glow); border-color: color-mix(in srgb, var(--amber) 55%, transparent); }
+.t .t-icon { margin-inline: auto; }
+.t-moto .t-icon { color: #b69cff; } .t-cam .t-icon { color: var(--cyan); }
+.t-tipo { font: 600 .78rem/1 var(--f-mono); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-bottom: .6rem; }
+.t-precio { font: 800 clamp(2.5rem, 5vw, 3.6rem)/1 var(--f-display); letter-spacing: -.05em; font-variant-numeric: tabular-nums; }
+.t-unit { margin-top: .5rem; font: 500 .8rem/1 var(--f-mono); color: var(--muted); }
+.t-feat { border-color: transparent; background: linear-gradient(var(--bg2), var(--bg2)) padding-box, conic-gradient(from var(--a), var(--yellow), var(--red), var(--cyan), var(--yellow)) border-box; border: 2px solid transparent; animation: spinA 6s linear infinite; }
+.t-feat .t-precio { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.t-badge { position: absolute !important; top: .9rem; right: .9rem; padding: .35rem .7rem; font: 700 .62rem/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: #1a0f00; background: var(--grad); border-radius: 999px; }
+
+/* ── Simulador de cobro ──────────────────────────────────── */
+.calc { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; margin-top: 1rem; padding: clamp(1.4rem, 3vw, 2.2rem); border-radius: 28px; background: var(--card); border: 1px solid var(--line-2); box-shadow: var(--shadow); }
+.calc h3 { font-size: 1.6rem; }
+.calc-note { margin: .3rem 0 1.4rem; font-size: .9rem; color: var(--muted); }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: .3rem; padding: .3rem; margin-bottom: 1.6rem; border-radius: 999px; background: var(--bg2); border: 1px solid var(--line); }
+.seg button { padding: .7rem .4rem; font: 700 .86rem/1 var(--f-body); color: var(--muted2); background: transparent; border: 0; border-radius: 999px; cursor: pointer; transition: background .35s, color .3s, transform .4s var(--spring), box-shadow .4s; }
+.seg button:hover { color: var(--text); transform: translateY(-2px); }
+.seg button.on { color: #1a0f00; background: var(--grad); box-shadow: 0 8px 22px -8px var(--glow); }
+.range-label { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: .9rem; font: 600 .86rem/1 var(--f-body); color: var(--muted2); }
+.range-label output { font: 700 1.05rem/1 var(--f-mono); color: var(--amber); }
+#calcRange { -webkit-appearance: none; appearance: none; width: 100%; height: 10px; border-radius: 10px; cursor: pointer; outline: none; background: linear-gradient(90deg, var(--yellow), var(--red)) 0 / var(--rp, 12%) 100% no-repeat, var(--bg2); border: 1px solid var(--line); }
+#calcRange::-webkit-slider-thumb { -webkit-appearance: none; width: 28px; height: 28px; border-radius: 50%; background: #fff; border: 4px solid var(--amber); box-shadow: 0 6px 18px var(--glow); transition: transform .3s var(--spring); }
+#calcRange::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 4px solid var(--amber); box-shadow: 0 6px 18px var(--glow); }
+#calcRange:active::-webkit-slider-thumb { transform: scale(1.25); }
+.calc-out { display: grid; align-content: center; gap: .7rem; }
+.calc-out > div { display: flex; justify-content: space-between; align-items: baseline; padding: .9rem 1.1rem; border-radius: 14px; background: var(--bg2); border: 1px solid var(--line); }
+.calc-out small { font: 500 .7rem/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.calc-out strong { font: 800 1.3rem/1 var(--f-display); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.calc-out .total { padding: 1.2rem 1.1rem; border: 0; background: var(--grad); }
+.calc-out .total small { color: rgba(26,15,0,.7); }
+.calc-out .total strong { font-size: clamp(1.9rem, 4vw, 2.5rem); color: #1a0f00; }
+.calc-out .total.bump strong { animation: bump .5s var(--spring); }
+
+@media (max-width: 959.98px) {
+  .bento { grid-template-columns: repeat(2, 1fr); }
+  .f, .f:nth-child(1), .f:nth-child(2) { grid-column: span 1; }
+  .f-wide { grid-column: span 2 !important; grid-template-columns: 1fr; gap: 1.4rem; }
+  .calc { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+  .steps { grid-template-columns: 1fr; padding: 0 0 0 2.2rem; }
+  .steps::before, .steps::after { top: 0; left: 8px; width: 4px; height: auto; }
+  .steps::before { right: auto; bottom: 0; background: repeating-linear-gradient(var(--line-2) 0 14px, transparent 14px 26px); }
+  .steps::after { bottom: auto; width: 4px; height: calc(100% * var(--sp)); }
+  .tarifas { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .bento { grid-template-columns: 1fr; }
+  .f-wide { grid-column: span 1 !important; }
+}
