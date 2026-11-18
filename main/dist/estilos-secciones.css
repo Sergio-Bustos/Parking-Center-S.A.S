@@ -29,6 +29,8 @@
 .f:hover { border-color: color-mix(in srgb, var(--amber) 55%, transparent); background: var(--card-h); box-shadow: var(--shadow), 0 20px 60px -30px var(--glow); }
 .f:nth-child(1), .f:nth-child(2) { grid-column: span 3; }
 .f-wide { grid-column: span 6 !important; display: grid; grid-template-columns: 1.1fr 1fr; gap: 2rem; align-items: center; }
+/* La terminal baja para no tapar el número 06 */
+.f-wide .term { margin-top: 3.6rem; }
 .f-n { position: absolute !important; top: 1.2rem; right: 1.4rem; font: 800 3.2rem/1 var(--f-display); letter-spacing: -.06em; color: transparent; -webkit-text-stroke: 1.5px var(--line-2); transition: transform .7s var(--spring), -webkit-text-stroke-color .4s; }
 .f:hover .f-n { transform: translate(-6px, 6px) rotate(-5deg) scale(1.1); -webkit-text-stroke-color: var(--amber); }
 
@@ -113,6 +115,7 @@
   .bento { grid-template-columns: repeat(2, 1fr); }
   .f, .f:nth-child(1), .f:nth-child(2) { grid-column: span 1; }
   .f-wide { grid-column: span 2 !important; grid-template-columns: 1fr; gap: 1.4rem; }
+  .f-wide .term { margin-top: 0; }
   .calc { grid-template-columns: 1fr; }
 }
 @media (max-width: 720px) {
