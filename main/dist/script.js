@@ -7,6 +7,19 @@
 (function () {
   'use strict';
 
+  // Sonido de click en cualquier clic o toque (click.mp4; si falla, prueba otras extensiones)
+  (function () {
+    var exts = ['mp4', 'mp3', 'm4a', 'wav', 'ogg'], au, i = 0;
+    try {
+      au = new Audio(); au.preload = 'auto'; au.volume = 0.7;
+      var next = function () { if (i < exts.length) { au.src = 'click.' + exts[i++]; au.load(); } };
+      au.addEventListener('error', next); next();
+    } catch (e) { return; }
+    document.addEventListener('click', function () {
+      try { au.currentTime = 0; var r = au.play(); if (r && r.catch) r.catch(function () {}); } catch (e) { /* sin audio */ }
+    }, true);
+  })();
+
   var root = document.documentElement, body = document.body;
   var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
