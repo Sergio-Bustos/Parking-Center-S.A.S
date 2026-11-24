@@ -136,3 +136,8 @@ footer span { font: 500 .78rem/1.5 var(--f-mono); letter-spacing: .02em; color: 
 ::view-transition-old(root) { z-index: 1; }
 .switching *, .switching *::before, .switching *::after { transition: none !important; }
 .switching .bg-grid, .switching .fx canvas, .switching .ticker-track, .switching .ticker * { animation-play-state: paused !important; }
+
+/* Sin el cuadro azul que Chrome móvil dibuja al tocar botones y enlaces */
+* { -webkit-tap-highlight-color: transparent; }
+button, a { -webkit-touch-callout: none; touch-action: manipulation; }
+.theme-btn:focus:not(:focus-visible) { outline: none; }
