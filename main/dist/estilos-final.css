@@ -141,3 +141,7 @@ footer span { font: 500 .78rem/1.5 var(--f-mono); letter-spacing: .02em; color: 
 * { -webkit-tap-highlight-color: transparent; }
 button, a { -webkit-touch-callout: none; touch-action: manipulation; }
 .theme-btn:focus:not(:focus-visible) { outline: none; }
+
+/* Cinta: las palabras antes huecas y grises ahora en el amarillo de la página */
+.ticker span.o { color: var(--yellow); -webkit-text-stroke: 0; }
+[data-theme="light"] .ticker span.o { color: var(--amber); }
