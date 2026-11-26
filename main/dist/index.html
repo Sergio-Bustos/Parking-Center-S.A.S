@@ -8,28 +8,36 @@
   <meta name="theme-color" content="#07080d" />
 
   <!-- Tema guardado (claro/oscuro) — se aplica antes de pintar para evitar parpadeos -->
-  <script>try{var t=localStorage.getItem('pc-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+  <script>document.documentElement.classList.add('js','intro');try{var t=localStorage.getItem('pc-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 
-  <!-- Fuentes: Bricolage Grotesque (títulos), Manrope (texto), JetBrains Mono (datos y placas) -->
+  <!-- Fuentes: Archivo (títulos) y Barlow (texto) van locales en estilos-herencia.css; JetBrains Mono (datos y placas) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
 
   <!-- Hojas de estilo (se dividen en 4 archivos pequeños; el orden importa) -->
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="estilos-hero.css" />
   <link rel="stylesheet" href="estilos-secciones.css" />
   <link rel="stylesheet" href="estilos-final.css" />
+  <link rel="stylesheet" href="estilos-principales.css" />
 
   <link rel="icon" type="image/png" href="image-removebg-preview%20(1).png" />
 </head>
 <body>
 
-<!-- Pantalla de carga: una barrera de parqueadero que se levanta (100% CSS, se quita sola) -->
-<div class="preloader" aria-hidden="true">
-  <div class="pl-gate"><i class="pl-post"></i><i class="pl-arm"></i></div>
-  <div class="pl-brand">PARKING <em>CENTER</em></div>
-  <div class="pl-bar"><span></span></div>
+<!-- Intro: tarjeta de bienvenida; al entrar, la persiana sube -->
+<div id="en" role="dialog" aria-label="Bienvenida">
+  <div class="en-placa" id="en-placa">
+    <div class="en-logo" id="en-logo" aria-hidden="true"><b>PC</b></div>
+    <div class="en-txt">
+      <p class="en-nom">Parking <em>Center</em></p>
+      <p class="en-sub">Aplicación automática de registro de vehículos</p>
+      <button class="btn btn-primary en-btn" id="en-abrir" type="button">Entrar al sistema</button>
+    </div>
+  </div>
+  <div class="en-borde" aria-hidden="true"></div>
+  <div class="en-riel" aria-hidden="true"></div>
 </div>
 
 <div class="scroll-progress" aria-hidden="true"></div>
@@ -46,7 +54,7 @@
 <!-- ===== NAVEGACIÓN ===== -->
 <header class="nav" id="nav">
   <a class="nav-logo" href="#inicio" aria-label="Parking Center S.A.S.">
-    <span class="nav-logo-icon">P</span>
+    <span class="nav-logo-icon">PC</span>
     <span class="nav-logo-text">PARKING <em>CENTER</em></span>
   </a>
 
@@ -63,8 +71,24 @@
       <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
     </button>
     <a class="btn btn-primary btn-sm" href="ParkingCenter.exe" download>Descargar</a>
+    <button class="nav-burger" id="menuAbrir" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button>
   </div>
 </header>
+
+<div class="menu" id="menu" hidden>
+  <button class="nav-burger menu-x" id="menuCerrar" type="button" aria-label="Cerrar menú"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <nav aria-label="Menú móvil">
+    <a href="#inicio" style="--i:0">Inicio</a>
+    <a href="#funciones" style="--i:1">Funciones</a>
+    <a href="#como-funciona" style="--i:2">Cómo funciona</a>
+    <a href="#tarifas" style="--i:3">Tarifas</a>
+    <a href="#descargar" style="--i:4">Descargar</a>
+  </nav>
+  <div class="menu-acc">
+    <a class="btn btn-primary btn-lg" href="ParkingCenter.exe" download>Descargar programa</a>
+    <a class="btn btn-ghost btn-lg" href="Manual_ParkingCenter.docx" download>Manual de usuario</a>
+  </div>
+</div>
 
 
 <main>
