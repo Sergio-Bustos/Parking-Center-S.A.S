@@ -7,7 +7,7 @@
 (function () {
   'use strict';
 
-  // Sonido de click en cualquier clic o toque (click.mp4; si falla, prueba otras extensiones)
+  // Sonido de click solo en botones, enlaces, imágenes, tarjetas y controles (no en espacios vacíos)
   (function () {
     var exts = ['mp4', 'mp3', 'm4a', 'wav', 'ogg'], au, i = 0;
     try {
@@ -15,11 +15,15 @@
       var next = function () { if (i < exts.length) { au.src = 'click.' + exts[i++]; au.load(); } };
       au.addEventListener('error', next); next();
     } catch (e) { return; }
-    document.addEventListener('click', function () {
-      try { au.currentTime = 0; var r = au.play(); if (r && r.catch) r.catch(function () {}); } catch (e) { /* sin audio */ }
+    var SEL = 'a,button,input,select,textarea,label,img,svg,[role="radio"],.spot,.chip,.car-wrap,.char,.panel,.ticker';
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      if (!t || !t.closest || !t.closest(SEL)) return;
+      try { au.currentTime = 0; var r = au.play(); if (r && r.catch) r.catch(function () {}); } catch (err) { /* sin audio */ }
     }, true);
   })();
 
+  window.__pcIntro = true;
   var root = document.documentElement, body = document.body;
   var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -81,19 +85,46 @@
   })();
 
 
-  // ── 2. Pantalla de carga (el CSS ya la quita sola; esto la adelanta) ───
-  var pre = $('.preloader');
-  if (pre) {
-    var t0 = performance.now();
-    var finish = function () {
-      setTimeout(function () {
-        pre.classList.add('done');
-        setTimeout(function () { if (pre.parentNode) pre.parentNode.removeChild(pre); }, 1200);
-      }, Math.max(0, 1500 - (performance.now() - t0)));
-    };
-    if (document.readyState === 'complete') finish(); else addEventListener('load', finish);
+  // ── 2. Intro: tarjeta con golpe y persiana que sube ────────────────────
+  var en = $('#en'), heroCounted = false;
+  function heroCount() {
+    if (heroCounted) return; heroCounted = true;
+    $$('.hero-stats [data-count]').forEach(countUp);
   }
-
+  function abrirSitio() {
+    // Las animaciones del hero estaban pensadas para empezar a ~1.8 s: se adelantan
+    try {
+      document.getAnimations().forEach(function (a) {
+        var tg = a.effect && a.effect.target, d = a.effect && a.effect.getTiming().delay;
+        if (tg && !(en && en.contains(tg)) && d >= 1500) a.currentTime = 1450;
+      });
+    } catch (e) { /* sin API de animaciones */ }
+    root.classList.remove('intro'); body.style.overflow = '';
+    setTimeout(heroCount, 900);
+  }
+  if (en) {
+    var enLogo = $('#en-logo'), enPlaca = $('#en-placa'), enBtn = $('#en-abrir'), entrado = false;
+    body.style.overflow = 'hidden';
+    requestAnimationFrame(function () { enLogo.classList.add('arma'); enPlaca.classList.add('lista'); });
+    var golpe = function (g) {
+      enPlaca.style.setProperty('--giro', g); enPlaca.classList.remove('golpe'); void enPlaca.offsetWidth; enPlaca.classList.add('golpe');
+      try { navigator.vibrate && navigator.vibrate(18); } catch (e) { /* sin vibración */ }
+    };
+    var entrar = function () {
+      if (entrado) return; entrado = true; enBtn.disabled = true;
+      var t = reduced ? [0, 0, 0, 0] : [30, 320, 630, 720];
+      if (!reduced) {
+        setTimeout(function () { golpe('-.6deg'); }, t[0]);
+        setTimeout(function () { golpe('.6deg'); }, t[1]);
+        setTimeout(function () { golpe('-.9deg'); }, t[2]);
+      }
+      setTimeout(function () { en.classList.add('abre'); abrirSitio(); }, t[3]);
+      setTimeout(function () { if (en.parentNode) en.parentNode.removeChild(en); }, t[3] + 1450);
+    };
+    enBtn.addEventListener('click', entrar);
+    document.addEventListener('keydown', function (e) { if (!entrado && e.key === 'Escape') entrar(); });
+    setTimeout(function () { try { enBtn.focus({ preventScroll: true }); } catch (e) { /* sin foco */ } }, 50);
+  } else { root.classList.remove('intro'); }
 
   // ── 3. Título del hero letra por letra ─────────────────────────────────
   var ci = 0;
@@ -132,6 +163,24 @@
   });
 
 
+  // ── 4b. Menú hamburguesa (celular) ─────────────────────────────────────
+  (function () {
+    var m = $('#menu'), ab = $('#menuAbrir'), ce = $('#menuCerrar'); if (!m || !ab || !ce) return;
+    var abrir = function () {
+      m.hidden = false; ab.setAttribute('aria-expanded', 'true');
+      requestAnimationFrame(function () { m.classList.add('abierto'); });
+      body.style.overflow = 'hidden'; try { ce.focus(); } catch (e) { /* sin foco */ }
+    };
+    var cerrar = function () {
+      m.classList.remove('abierto'); m.hidden = true; ab.setAttribute('aria-expanded', 'false'); body.style.overflow = '';
+    };
+    ab.addEventListener('click', abrir); ce.addEventListener('click', cerrar);
+    $$('a', m).forEach(function (a) { a.addEventListener('click', cerrar); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !m.hidden) cerrar(); });
+    addEventListener('resize', function () { if (innerWidth >= 900 && !m.hidden) cerrar(); });
+  })();
+
+
   // ── 5. Aparición al hacer scroll (con variantes) y contadores ──────────
   var variants = ['rv-up', 'rv-zoom', 'rv-up'];
   $$('.reveal').forEach(function (el) {
@@ -167,7 +216,7 @@
   }, { threshold: .1, rootMargin: '0px 0px -30px 0px' }) : null;
   $$('.reveal').forEach(function (el) { if (io) io.observe(el); else show(el); });
   // Contadores del hero (no están dentro de un .reveal)
-  setTimeout(function () { $$('.hero-stats [data-count]').forEach(countUp); }, pre ? 2300 : 600);
+  if (!en) setTimeout(heroCount, 600);
 
 
   // ── 6. Scroll: progreso, menú, sección activa, camino de pasos ─────────
