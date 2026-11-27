@@ -73,6 +73,7 @@
     };
     var claxon = function (dur) {
       if (!SON) return;
+      if (claxonAct) paraClaxon(20); // nunca dos claxons a la vez
       var c = despierta(), fade = 140;
       if (c && buf.claxon) {
         try {
